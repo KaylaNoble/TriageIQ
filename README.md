@@ -101,6 +101,7 @@ TriageIQ/
 git clone https://github.com/KaylaNoble/TriageIQ.git
 cd TriageIQ
 pip install -r requirements.txt
+python fix_app.py
 streamlit run app.py
 ```
 
