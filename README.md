@@ -29,13 +29,21 @@ TriageIQ is a healthcare informatics dashboard that predicts Emergency Departmen
 
 # Screenshots
 
+## Live Operations Dashboard
+
+![Dashboard](images/live-dashboard.png)
+
 ## Snapshot Intake Simulator
 
 ![Snapshot Simulator](images/intake-simulator.png)
 
-## Live Operations Dashboard
+## Manager Alert Settings
 
-![Dashboard](images/live-dashboard.png)
+![Alert Settings](images/alert-settings.png)
+
+## Anonymized Triage Queue
+
+![Triage Queue](images/triage-queue.png)
 
 ---
 
