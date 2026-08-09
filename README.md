@@ -37,11 +37,6 @@ TriageIQ is a healthcare informatics dashboard that predicts Emergency Departmen
 
 ![Dashboard](images/live-dashboard.png)
 
-Place your screenshots inside an **images** folder using these filenames:
-
-- intake-simulator.png
-- live-dashboard.png
-
 ---
 
 # Technology Stack
