@@ -50,35 +50,41 @@ def render_dashboard():
         st.success(f"✅ **NORMAL OPERATIONS**: Department capacity is stable. Bed Occupancy: {occupancy_pct:.1f}% | Waiting: {patients_waiting}")
 
     st.markdown("---")
-
-   # 4. Live Queue Table
+    # 4. Live Queue Table
     st.subheader("📋 Active Waiting Room Queue")
-    
+
     if patients_waiting > 0:
         base_wait = 15.0  # Base wait estimate in minutes
-        
+
         # Build markdown table header
         table_md = "| Queue Position | Acuity Level | Estimated Wait Time | Status |\n"
         table_md += "| :--- | :--- | :--- | :--- |\n"
-        
+
+        # Starts at #1 and creates exactly the number of
+        # patients currently reported as waiting.
         for pos in range(1, int(patients_waiting) + 1):
             is_high = pos <= high_acuity
-            acuity = "ESI 2 - Emergent" if is_high else "ESI 4 - Semi-Urgent"
+
+            acuity = (
+                "ESI 2 - Emergent"
+                if is_high
+                else "ESI 4 - Semi-Urgent"
+            )
+
             wait = f"{int(pos * base_wait)} mins"
-            status = "Priority Triage" if is_high else "Waiting for Bed"
-            table_md += f"| #{pos} | {acuity} | {wait} | {status} |\n"
-            
+
+            status = (
+                "Priority Triage"
+                if is_high
+                else "Waiting for Bed"
+            )
+
+            table_md += (
+                f"| #{pos} | {acuity} | "
+                f"{wait} | {status} |\n"
+            )
+
         st.markdown(table_md)
-    else:
-        st.info("The waiting room is currently empty.")
-        
-        # Table Rows (Starts at #1, exactly patients_waiting count)
-        for pos in range(1, int(patients_waiting) + 1):
-            is_high = pos <= high_acuity
-            c1, c2, c3, c4 = st.columns([1, 2, 2, 2])
-            c1.write(f"#{pos}")
-            c2.write("ESI 2 - Emergent" if is_high else "ESI 4 - Semi-Urgent")
-            c3.write(f"{int(pos * base_wait)} mins")
-            c4.write("Priority Triage" if is_high else "Waiting for Bed")
+
     else:
         st.info("The waiting room is currently empty.")
