@@ -1195,7 +1195,6 @@ elif nav_choice == "Anonymized Triage Queue":
                 }
             )
 
-
         queue_data = (
             pd.DataFrame(
                 queue_rows
@@ -1203,6 +1202,67 @@ elif nav_choice == "Anonymized Triage Queue":
         )
 
 
+        # -------------------------------------------------
+        # PRIORITIZE QUEUE BY EMERGENCY SEVERITY INDEX
+        # -------------------------------------------------
+
+        esi_priority = {
+            "ESI 2 - Emergent": 2,
+            "ESI 3 - Urgent": 3,
+            "ESI 4 - Less Urgent": 4,
+            "ESI 5 - Non-Urgent": 5
+        }
+
+
+        # Create temporary numeric severity value
+        # so the queue can be sorted clinically.
+        queue_data["_ESI Priority"] = (
+            queue_data[
+                "Triage Category"
+            ].map(
+                esi_priority
+            )
+        )
+
+
+        # Sort patients by ESI severity.
+        # Stable sorting preserves the existing order
+        # among patients with the same ESI level.
+        queue_data = (
+            queue_data
+            .sort_values(
+                by="_ESI Priority",
+                ascending=True,
+                kind="stable"
+            )
+            .reset_index(
+                drop=True
+            )
+        )
+
+
+        # Recalculate priority rank AFTER
+        # clinical severity sorting.
+        queue_data[
+            "Priority Rank"
+        ] = range(
+            1,
+            len(queue_data) + 1
+        )
+
+
+        # Remove temporary sorting column
+        # so users never see it.
+        queue_data = (
+            queue_data.drop(
+                columns=[
+                    "_ESI Priority"
+                ]
+            )
+        )
+
+
+        # Display row numbers beginning at 1.
         queue_data.index = range(
             1,
             len(queue_data) + 1
